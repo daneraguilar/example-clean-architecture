@@ -8,7 +8,10 @@ import co.com.ceiba.mobile.pruebadeingreso.R
 import co.com.ceiba.mobile.pruebadeingreso.databinding.UserListItemBinding
 import co.com.ceiba.mobile.pruebadeingreso.userfeature.domain.entity.User
 
-class UserAdapter(private val showPosts: (user: User) -> Unit) :
+class UserAdapter(
+    private val isEmptyToFilter: (isEmpty: Boolean) -> Unit,
+    private val showPosts: (user: User) -> Unit
+) :
     RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
 
@@ -48,6 +51,7 @@ class UserAdapter(private val showPosts: (user: User) -> Unit) :
 
     fun filterUsers(filterText: String) {
         filter = filterText
+        isEmptyToFilter(getFilteredList(users, filter).isEmpty())
         notifyDataSetChanged()
     }
 

@@ -7,11 +7,13 @@ import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import co.com.ceiba.mobile.pruebadeingreso.R
 import co.com.ceiba.mobile.pruebadeingreso.common.USER
+import co.com.ceiba.mobile.pruebadeingreso.common.visible
 import co.com.ceiba.mobile.pruebadeingreso.databinding.ActivityMainBinding
 import co.com.ceiba.mobile.pruebadeingreso.userfeature.ui.adapter.UserAdapter
 import co.com.ceiba.mobile.pruebadeingreso.userfeature.ui.viewmodel.ScreenState
 import co.com.ceiba.mobile.pruebadeingreso.userfeature.ui.viewmodel.UserViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity() {
     private val _userViewModel: UserViewModel by viewModel()
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        _adapter = UserAdapter {
+        _adapter = UserAdapter(::showEmptyMessage) {
             startActivity(Intent(this, PostActivity::class.java).putExtra(USER, it))
         }
         with(_binder) {
@@ -64,7 +66,18 @@ class MainActivity : AppCompatActivity() {
             is ScreenState.HasUserContent -> _adapter.updateItems(screenState.list)
             is ScreenState.Loading -> showOrHideLoading(screenState.visible)
             is ScreenState.OffLineNetwork -> showMessage(getString(R.string.connection_error_description))
-            ScreenState.NotContent -> showMessage(getString(R.string.no_results))
+            ScreenState.NotContent -> showEmptyMessage(true)
+        }
+
+    }
+
+    private fun showEmptyMessage(isEmpty: Boolean) {
+        if (!isEmpty) {
+            _binder.recyclerViewSearchResults.visible = true
+            _binder.emptyList.root.visible = false
+        } else {
+            _binder.recyclerViewSearchResults.visible = false
+            _binder.emptyList.root.visible = true
         }
 
     }
@@ -74,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showOrHideLoading(visible: Boolean) {
-
+        _binder.progressBar.visible = visible
     }
 
     override fun onStart() {

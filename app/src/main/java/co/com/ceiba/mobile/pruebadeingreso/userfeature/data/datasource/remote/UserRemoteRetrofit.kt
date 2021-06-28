@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface UserRemoteRetrofit {
 
     @GET(GET_USERS)
-    suspend fun getUserPost(): Response<List<User>>
+    suspend fun getUsers(): Response<List<User>>
 
     @GET(GET_POST_USER)
     suspend fun getUserPost(@Query("userId") userId: Int): Response<List<Post>>

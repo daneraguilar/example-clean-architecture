@@ -61,4 +61,6 @@ dependencies {
     implementation "io.insert-koin:koin-core-ext:$koin_version"
     testImplementation "io.insert-koin:koin-test:$koin_version"
     implementation "io.insert-koin:koin-android-viewmodel:$koin_version"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3'
+    testImplementation "android.arch.core:core-testing:1.1.1"
 }

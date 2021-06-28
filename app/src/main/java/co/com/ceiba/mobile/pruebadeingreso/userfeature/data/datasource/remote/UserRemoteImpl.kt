@@ -9,7 +9,7 @@ import co.com.ceiba.mobile.pruebadeingreso.userfeature.domain.UserResultReposito
 class UserRemoteImpl(private val _retrofit: UserRemoteRetrofit) : UserRemote {
     override suspend fun getUsers(): UserResultRepository {
         try {
-            val result = _retrofit.getUserPost()
+            val result = _retrofit.getUsers()
 
             return when (result.code()) {
                 HttpCode.OK.code -> {
